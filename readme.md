@@ -2,6 +2,11 @@
 
 ## 使用
 
+```bash
+# 安装
+pip install pyncer
+```
+
 ### 训练
 
 ```python
