@@ -1,0 +1,10 @@
+/.*/
+/assets/
+/build/
+/dist/
+/debug/
+/*.egg-info/
+/debug*.py
+__pycache__
+*.png
+*.m
