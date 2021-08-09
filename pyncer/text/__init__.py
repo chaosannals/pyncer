@@ -9,6 +9,7 @@ from .model import TextPyncerNet
 
 class TextPyncer:
     '''
+    文本验证码识别器。
     '''
 
     def __init__(self, path, length, charset, size=(128, 64)):
@@ -19,17 +20,23 @@ class TextPyncer:
         self.datum = TextPyncerDatum(length, charset, size)
         self.net = TextPyncerNet(length, len(charset))
         if os.path.isfile(path):
-            self.net.load(path)
+            self.load()
     
     def load(self):
         '''
+        加载数据。
         '''
-        self.net.load(self.path)
+
+        d = torch.load(self.path)
+        self.net.load_state_dict(d)
 
     def save(self):
         '''
+        保存数据。
         '''
-        self.net.save(self.path)
+
+        d = self.net.state_dict()
+        torch.save(d, self.path)
 
 
     def infer(self, path):
@@ -44,8 +51,10 @@ class TextPyncer:
         c = torch.cat(r, dim=1)
         return self.datum.cast_text(c[0])
 
+
 class TextPyncerTrainer:
     '''
+    文本验证码识别器训练器。
     '''
 
     def __init__(self, pyncer: TextPyncer, train_data, test_data, loader_worker_count=4, batch_size=128, learning_rate=1e-3):
@@ -64,6 +73,7 @@ class TextPyncerTrainer:
 
     def train(self):
         '''
+        训练。
         '''
 
         for i, (x, code) in enumerate(self.train_loader, 0):
@@ -79,6 +89,7 @@ class TextPyncerTrainer:
 
     def test(self, test_count):
         '''
+        测试。
         '''
 
         total_count = test_count * self.batch_size

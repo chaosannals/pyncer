@@ -1,13 +1,14 @@
-import torch
 from torch import nn
 
 
 class TextPyncerNet(nn.Module):
     '''
+    文本验证码识别网络。
     '''
 
     def __init__(self, length, charset_length):
         '''
+        初始化。
         '''
 
         super().__init__()
@@ -48,6 +49,7 @@ class TextPyncerNet(nn.Module):
 
     def forward(self, x):
         '''
+        前向。
         '''
 
         x = self.lv1(x)
@@ -60,16 +62,3 @@ class TextPyncerNet(nn.Module):
         fn = [getattr(self, f'lv{5 + i}') for i in range(self.length)]
 
         return [f(x) for f in fn]
-
-    def load(self, path):
-        '''
-        '''
-        d = torch.load(path)
-        self.load_state_dict(d)
-
-    def save(self, path):
-        '''
-        '''
-
-        d = self.state_dict()
-        torch.save(d, path)
